@@ -11,3 +11,8 @@ export interface Analyzer {
   flightList: Flight[];
   run(): string[];
 }
+
+export interface Printer {
+  connexion: string;
+  print(analysis: string[]): void;
+}

@@ -1,5 +1,5 @@
-import { AvgAnalyzer } from "./Analyzers/AvgAnalyzer";
 import { MinMaxAnalyzer } from "./Analyzers/MinMaxAnalyzer";
+import { HTMLPrinter } from "./Printers/HTMLPrinter";
 import { FlightReader } from "./Readears/FlightReader";
 import img from "./assets/flight.svg";
 
@@ -33,9 +33,12 @@ const initApp = () => {
     try {
       await fligtReader.read();
       const flightList = fligtReader.data;
-      const avgAnalyzer = new AvgAnalyzer("Paris-Madrid", flightList);
+      //const avgAnalyzer = new AvgAnalyzer("Paris-Madrid", flightList);
       const minMaxAnalyzer = new MinMaxAnalyzer("Paris-Madrid", flightList);
-      console.log(minMaxAnalyzer.run());
+
+      const analysis = minMaxAnalyzer.run();
+      const htmlPrinter = new HTMLPrinter("Paris-Madrid");
+      htmlPrinter.print(analysis);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
