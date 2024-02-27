@@ -47,7 +47,7 @@ export class HTMLPrinter implements Printer {
   private createFile(content: string): File {
     const filename = `rapport_${this.connexion}_${new Date()
       .toLocaleString()
-      .replace(".", "_")}`;
+      .replace(":", "_")}`;
     const file = new File([content], filename, { type: "text/html" });
     return file;
   }
