@@ -34,7 +34,7 @@ const initApp = () => {
       await fligtReader.read();
       const flightList = fligtReader.data;
 
-      DOMTemplate.instance.renderTemplate();
+      DOMTemplate.instance.renderTemplate(flightList);
       // const avgAnalyzer = new AvgAnalyzer("Paris-Madrid", flightList);
       // const minMaxAnalyzer = new MinMaxAnalyzer("Paris-Madrid", flightList);
       // const htmlPrinter = new HTMLPrinter("Paris-Madrid");
