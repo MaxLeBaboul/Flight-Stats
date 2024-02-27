@@ -1,7 +1,20 @@
+import { AvgAnalyzer } from "./Analyzers/AvgAnalyzer";
+import { MinMaxAnalyzer } from "./Analyzers/MinMaxAnalyzer";
 import { DOMTemplate } from "./DOMTemplate";
+import { HTMLPrinter } from "./Printers/HTMLPrinter";
+import { PDFPrinter } from "./Printers/PDFPrinter";
 import { FlightReader } from "./Readears/FlightReader";
+import { Report } from "./Report";
 import img from "./assets/flight.svg";
 
+export const analyzerLookup = {
+  [AvgAnalyzer.name]: AvgAnalyzer,
+  [MinMaxAnalyzer.name]: MinMaxAnalyzer,
+};
+export const printerLookup = {
+  [HTMLPrinter.name]: HTMLPrinter,
+  [PDFPrinter.name]: PDFPrinter,
+};
 const initApp = () => {
   //afficher l'images
   document.querySelector("img")!.src = img;
@@ -34,15 +47,18 @@ const initApp = () => {
       await fligtReader.read();
       const flightList = fligtReader.data;
 
-      DOMTemplate.instance.renderTemplate(flightList);
-      // const avgAnalyzer = new AvgAnalyzer("Paris-Madrid", flightList);
-      // const minMaxAnalyzer = new MinMaxAnalyzer("Paris-Madrid", flightList);
-      // const htmlPrinter = new HTMLPrinter("Paris-Madrid");
-      // const pdfPrinter = new PDFPrinter("Paris-Madrid");
-      // const report1 = new Report(avgAnalyzer, htmlPrinter);
-      // const report2 = new Report(minMaxAnalyzer, pdfPrinter);
-      // report1.generate();
-      // report2.generate();
+      const [selectConnexion, selectAnalyzer, selectPrinter] =
+        DOMTemplate.instance.renderTemplate(flightList);
+      DOMTemplate.instance.btn?.addEventListener("click", () => {
+        const connexion = selectConnexion.value;
+        const analyzer = selectAnalyzer.value;
+        const printer = selectPrinter.value;
+        const report = new Report(
+          new analyzerLookup[analyzer](connexion, flightList),
+          new printerLookup[printer](connexion)
+        );
+        report.generate();
+      });
     } catch (error) {
       if (error instanceof Error) {
         DOMTemplate.instance.renderAlert(error.message);

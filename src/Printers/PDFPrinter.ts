@@ -2,6 +2,7 @@ import jsPDF from "jspdf";
 import { Printer } from "../types";
 
 export class PDFPrinter implements Printer {
+  static description: string = "Rapport au format PDF";
   constructor(public connexion: string) {}
 
   print(analysis: string[]): void {
